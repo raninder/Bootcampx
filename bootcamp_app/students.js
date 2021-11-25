@@ -9,13 +9,13 @@ const pool = new Pool({
 
 const cohortName = process.argv[2];
 const limit = process.argv[3];
-pool.query(`
+return pool.query(`
 SELECT students.id as student_id, students.name as name, cohorts.name as cohort
 FROM students
 JOIN cohorts ON cohorts.id = cohort_id
-WHERE cohorts.name LIKE '${cohortName}%'
-LIMIT ${limit};
-`)
+WHERE cohorts.name LIKE $1
+LIMIT $2;`,[cohortName,limit]
+)
 
 .then(res => {
   // console.log(res.rows);
